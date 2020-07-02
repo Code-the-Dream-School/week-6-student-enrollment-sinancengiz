@@ -66,10 +66,9 @@ function handle_students_function(students_data){
         var student_div = document.createElement("div")
         student_div.innerHTML = "";
 
-        var header_div = document.createElement("div")
         var h4_element = document.createElement("h4")
         h4_element.innerHTML = students_data[i].name+" "+students_data[i].last_name;
-        h4_element.classList.add("col-9")
+        h4_element.classList.add("h4_element")
         student_div.appendChild(h4_element)
 
         var active_element = document.createElement("p")
@@ -167,6 +166,7 @@ function handle_courses_function(courses_data){
         submit_student_button.innerHTML = "Submit Student";
         form_element.appendChild(select_element)
         form_element.appendChild(submit_student_button)
+        form_element.setAttribute("id", "add_student_form");
         form_element.style.display = "none";
         courses_div.appendChild(form_element)
          
@@ -207,7 +207,6 @@ function postData(e){
     var new_student_form = document.getElementById("form");
     new_student_form.style.display = "block";
 }
-
 
 
 
