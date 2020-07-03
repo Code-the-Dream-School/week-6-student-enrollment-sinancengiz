@@ -29,16 +29,27 @@ function form_submit(e){
     var nameValue = document.getElementById("fname").value;
     var lastNameValue = document.getElementById("lname").value;
     var activeValue = document.getElementById("active_select").value;
-    if(activeValue === 'true'){
-        var status = true;
+
+    current_students_name_list =[]
+    for(i = 0; i< students_list.length;i++){
+        current_students_name_list.push(students_list[i].name+" "+students_list[i].last_name)
+    }
+    if (current_students_name_list.includes(nameValue+" "+lastNameValue)){
+        alert("student already excit in the database")
     }
     else{
-        var status = false;
+        if(activeValue === 'true'){
+            var status = true;
+        }
+        else{
+            var status = false;
+        }
+        students_list.push({name:nameValue,last_name:lastNameValue,id:students_list.length,status:status,courses:[]})
+        console.log(students_list)
+        
+        handle_students_function(students_list)
     }
-    students_list.push({name:nameValue,last_name:lastNameValue,id:students_list.length,status:status,courses:[]})
-    console.log(students_list)
-    
-    handle_students_function(students_list)
+
 
 }
 
@@ -115,11 +126,13 @@ function handle_students_function(students_data){
 
             if ( students_list[event.srcElement.value].courses.includes(dummy_course)){
                 alert("This course is already taken by student")
+                handle_students_function(students_list)
             }
             else if (courses_list[corresponding_course_id].students.length >= 3){
                 alert("not more then 3 students can take this course is full")
+                handle_students_function(students_list)
             }
-            else if(parseInt(students_list[event.srcElement.value].courses.length) < 3){
+            else if(parseInt(students_list[event.srcElement.value].courses.length) < 4){
                 students_list[event.srcElement.value].courses.push(dummy_course)
                 handle_students_function(students_list)
 
@@ -130,7 +143,8 @@ function handle_students_function(students_data){
                 }
                 console.log(courses_list)
             }else{
-                alert("Student cannot take more then 3 courses")
+                alert("Student cannot take more then 4 courses")
+                handle_students_function(students_list)
             }
            
         }
@@ -150,16 +164,81 @@ function handle_students_function(students_data){
             add_course_button.onclick = function (event) {
                 document.getElementById("add_course_form"+ event.srcElement.id).style.display = "block";
                 document.getElementById(event.srcElement.id).style.display = "none";
+                document.getElementById("edit"+event.srcElement.id).style.display = "none";
+
             }
             student_div.appendChild(add_course_button)
 
         }
 
+        var edit_student_form = document.createElement("form")
+        var student_name_label = document.createElement("LABEL")
+        student_name_label.innerHTML = "First Name";
+        var student_name_input = document.createElement("input")
+        student_name_input.setAttribute("id", "student_name_input"+students_data[i].id.toString());
+        student_name_input.setAttribute("value", students_data[i].name);
+        var student_last_name_label = document.createElement("LABEL")
+        student_last_name_label.innerHTML = "Last Name";
+        var student_last_name_input = document.createElement("input")
+        student_last_name_input.setAttribute("id", "student_last_name_input"+students_data[i].id.toString());
+        student_last_name_input.setAttribute("value", students_data[i].last_name);
+        var set_active_or_not = document.createElement("select")
+        set_active_or_not.setAttribute("id", "select_active_or_not"+students_data[i].id.toString());
+        var option_element = document.createElement("option")
+        option_element.innerHTML = "Active";
+        set_active_or_not.appendChild(option_element)
+        var option_element = document.createElement("option")
+        option_element.innerHTML = "Not Active";
+        set_active_or_not.appendChild(option_element)
+        var submit_edit_button = document.createElement("button")
+        submit_edit_button.innerHTML = "Submit Edit";
+        submit_edit_button.setAttribute("value", students_data[i].id.toString());
+        submit_edit_button.onclick = function (event) {
+            event.preventDefault()
+            var name_input = document.getElementById("student_name_input"+ event.srcElement.value).value
+            students_list[event.srcElement.value].name = name_input
+            var last_name_input = document.getElementById("student_last_name_input"+ event.srcElement.value).value
+            students_list[event.srcElement.value].last_name = last_name_input
+            //set student active or not
+            students_list[event.srcElement.value].last_name = last_name_input
+            var active_or_not = document.getElementById("select_active_or_not"+event.srcElement.value);
+            var dummy_status = active_or_not.options[active_or_not.options.selectedIndex].value;
+            if(dummy_status=="Active"){
+                students_list[event.srcElement.value].status = true
+                handle_students_function(students_list)
+            }else{
+                students_list[event.srcElement.value].status = false
+                handle_students_function(students_list)
+            }
+
+            
+        }
+        edit_student_form.appendChild(student_name_label)
+        edit_student_form.appendChild(student_name_input)
+        edit_student_form.appendChild(student_last_name_label)
+        edit_student_form.appendChild(student_last_name_input)
+        edit_student_form.appendChild(set_active_or_not)
+        edit_student_form.appendChild(submit_edit_button)
+        edit_student_form.setAttribute("id", "edit_student_form"+students_data[i].id.toString());
+        edit_student_form.classList.add("edit_info_form")
+        edit_student_form.style.display = "none";
+        student_div.appendChild(edit_student_form)
 
         var edit_info_button = document.createElement("button")
-        edit_info_button.innerHTML = "Edit Info";
+        edit_info_button.innerHTML = "Edit Info ";
+        button_id = students_data[i].id.toString();
+        edit_info_button.setAttribute("id", "edit"+button_id);
+        edit_info_button.setAttribute("value", students_data[i].id.toString());
+        edit_info_button.classList.add("edit_info_button")
+        edit_info_button.onclick = function (event) {
+            document.getElementById("edit_student_form"+ event.srcElement.value).style.display = "block";
+            if(document.getElementById(event.srcElement.value)){
+                document.getElementById(event.srcElement.value).style.display = "none";
+            }
+            
+            document.getElementById("edit"+event.srcElement.value).style.display = "none";
+        }
         student_div.appendChild(edit_info_button)
-
         student_div.classList.add("student_div")
         the_table.appendChild(student_div)
     }

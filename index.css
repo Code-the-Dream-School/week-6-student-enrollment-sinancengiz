@@ -12,7 +12,6 @@ body{
 .student_div{
   width: 280px;
   background:#add8e6;
-  padding: 30px;
   padding-top: 50px;
   border:solid;
   border-color: blue;
@@ -26,7 +25,6 @@ body{
 .courses_div{
   width: 280px;
   background:yellow;
-  padding: 30px;
   padding-top: 50px;
   border:solid;
   border-color: blue;
@@ -55,4 +53,21 @@ form input{
 
 button{
   margin-top:1%;
+}
+
+.edit_info_form input{
+  width: 60%;
+}
+
+.edit_info_form select{
+  width: 60%;
+
+}
+
+.edit_info_form label{
+  width: 40%;
+}
+
+ul{
+ list-style-type:none;
 }
