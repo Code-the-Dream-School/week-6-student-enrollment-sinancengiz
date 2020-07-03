@@ -17,7 +17,7 @@ body{
   border-color: blue;
   float: left;
   margin:1%;
-  height: 300px;
+  height: 350px;
   text-align: center;
 }
 
@@ -43,7 +43,7 @@ body{
 }
 
 form{
-  background: gray;
+  background:none;
   text-align: center;
 
 }
@@ -68,6 +68,11 @@ button{
   width: 40%;
 }
 
+.add_student_form_class select{
+  width: 60%;
+}
 ul{
  list-style-type:none;
+ margin: 0; /* To remove default bottom margin */ 
+ padding: 0; /* To remove default left padding */
 }

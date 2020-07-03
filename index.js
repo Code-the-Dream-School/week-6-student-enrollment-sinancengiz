@@ -356,6 +356,7 @@ function handle_courses_function(courses_data){
         form_element.appendChild(select_element)
         form_element.appendChild(submit_student_button)
         form_element.setAttribute("id", "add_student_form"+courses_data[i].id.toString());
+        form_element.classList.add("add_student_form_class")
         form_element.style.display = "none";
         courses_div.appendChild(form_element)
          
