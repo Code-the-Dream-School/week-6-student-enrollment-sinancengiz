@@ -86,12 +86,75 @@ function handle_students_function(students_data){
         }
         student_div.appendChild(ul_element)
 
+        var form_element = document.createElement("form")
+        var select_element = document.createElement("select")
+        select_element.setAttribute("id", "select_course"+students_data[i].id.toString());
+        for(j=0; j < courses_list.length; j++){
+                 var option_element = document.createElement("option")
+                option_element.innerHTML = courses_list[j].name;
+                select_element.appendChild(option_element)
+        }
 
-        var add_course_button = document.createElement("button")
-        button_id = students_data[i].id;
-        add_course_button.setAttribute("id", button_id);
-        add_course_button.innerHTML = "Add Course";
-        student_div.appendChild(add_course_button)
+        var submit_course_button = document.createElement("button")
+        submit_course_button.innerHTML = "Submit Course";
+        submit_course_button.setAttribute("value", students_data[i].id.toString());
+        submit_course_button.onclick = function (event) {
+            event.preventDefault()
+            document.getElementById("add_course_form"+event.srcElement.value).style.display = "none";
+            document.getElementById(event.srcElement.value).style.display = "block";
+            var e = document.getElementById("select_course"+event.srcElement.value);
+            var dummy_course = e.options[e.selectedIndex].value;
+            //find corresponding course id
+            var corresponding_course_id = 0
+            for(c=0; c < courses_list.length; c++){
+                if(courses_list[c].name  == dummy_course){
+                    corresponding_course_id = courses_list[c].id
+                }
+            }
+            console.log(corresponding_course_id)
+
+            if ( students_list[event.srcElement.value].courses.includes(dummy_course)){
+                alert("This course is already taken by student")
+            }
+            else if (courses_list[corresponding_course_id].students.length >= 3){
+                alert("not more then 3 students can take this course is full")
+            }
+            else if(parseInt(students_list[event.srcElement.value].courses.length) < 3){
+                students_list[event.srcElement.value].courses.push(dummy_course)
+                handle_students_function(students_list)
+
+                for(s=0; s < courses_list.length; s++){
+                    if(courses_list[s].name == dummy_course){
+                        courses_list[s].students.push(students_data[event.srcElement.value].name+" "+students_data[event.srcElement.value].last_name)
+                    }
+                }
+                console.log(courses_list)
+            }else{
+                alert("Student cannot take more then 3 courses")
+            }
+           
+        }
+
+        form_element.appendChild(select_element)
+        form_element.appendChild(submit_course_button)
+        form_element.setAttribute("id", "add_course_form"+students_data[i].id.toString());
+        form_element.style.display = "none";
+        student_div.appendChild(form_element)
+
+        if (students_data[i].status == true){
+            var add_course_button = document.createElement("button")
+            button_id = students_data[i].id.toString();
+            add_course_button.setAttribute("id", button_id);
+            add_course_button.innerHTML = "Add Course";
+            add_course_button.classList.add("add_course_button")
+            add_course_button.onclick = function (event) {
+                document.getElementById("add_course_form"+ event.srcElement.id).style.display = "block";
+                document.getElementById(event.srcElement.id).style.display = "none";
+            }
+            student_div.appendChild(add_course_button)
+
+        }
+
 
         var edit_info_button = document.createElement("button")
         edit_info_button.innerHTML = "Edit Info";
@@ -207,14 +270,10 @@ function handle_courses_function(courses_data){
                 console.log(students_list)
             }else{
                 alert("you can not add more then 3 student per course")
-            }
-
-            for(j=0; j < students_list.length; j++){
-
-            }
-                
+            }              
             
         }
+
         form_element.appendChild(select_element)
         form_element.appendChild(submit_student_button)
         form_element.setAttribute("id", "add_student_form"+courses_data[i].id.toString());
