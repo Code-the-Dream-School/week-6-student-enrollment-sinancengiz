@@ -136,7 +136,7 @@ function courses_function(){
 function handle_courses_function(courses_data){
     var new_student_form = document.getElementById("form");
     new_student_form.style.display = "none";
-    console.log(courses_data)
+
     var the_table = document.getElementById("table")
     the_table.innerHTML = "";
 
@@ -153,8 +153,17 @@ function handle_courses_function(courses_data){
         duration_element.innerHTML = courses_data[i].duration;
         courses_div.appendChild(duration_element)
 
+        var ul_element = document.createElement("ul")
+        for(j=0; j < courses_data[i].students.length; j++){
+            var li_element = document.createElement("li")
+            li_element.innerHTML = courses_data[i].students[j];
+            ul_element.appendChild(li_element)
+        }
+        courses_div.appendChild(ul_element)
+
         var form_element = document.createElement("form")
         var select_element = document.createElement("select")
+        select_element.setAttribute("id", "select_student"+courses_data[i].id.toString());
         for(j=0; j < students_list.length; j++){
             if(students_list[j].status == true){
                 var option_element = document.createElement("option")
@@ -164,20 +173,66 @@ function handle_courses_function(courses_data){
         }
         var submit_student_button = document.createElement("button")
         submit_student_button.innerHTML = "Submit Student";
+        submit_student_button.setAttribute("value", courses_data[i].id.toString());
+        submit_student_button.onclick = function (event) {
+            event.preventDefault()
+            document.getElementById("add_student_form"+event.srcElement.value).style.display = "none";
+            document.getElementById(event.srcElement.value).style.display = "block";
+            var e = document.getElementById("select_student"+event.srcElement.value);
+            var dummy_student = e.options[e.selectedIndex].value;
+            //find corresponding student id
+            var corresponding_student_id = 0
+            for(s=0; s < students_list.length; s++){
+                if(students_list[s].name + " "+students_list[s].last_name == dummy_student){
+                    corresponding_student_id = students_list[s].id
+                }
+            }
+            console.log(corresponding_student_id)
+
+            if ( courses_list[event.srcElement.value].students.includes(dummy_student)){
+                alert("Student already exsit in the course")
+            }
+            else if (students_list[corresponding_student_id].courses.length >= 3){
+                alert("this student has 3 courses, cannot have more")
+            }
+            else if(parseInt(courses_list[event.srcElement.value].students.length) < 3){
+                courses_list[event.srcElement.value].students.push(dummy_student)
+                handle_courses_function(courses_list)
+
+                for(s=0; s < students_list.length; s++){
+                    if(students_list[s].name + " "+students_list[s].last_name == dummy_student){
+                        students_list[s].courses.push(courses_data[event.srcElement.value].name)
+                    }
+                }
+                console.log(students_list)
+            }else{
+                alert("you can not add more then 3 student per course")
+            }
+
+            for(j=0; j < students_list.length; j++){
+
+            }
+                
+            
+        }
         form_element.appendChild(select_element)
         form_element.appendChild(submit_student_button)
-        form_element.setAttribute("id", "add_student_form");
+        form_element.setAttribute("id", "add_student_form"+courses_data[i].id.toString());
         form_element.style.display = "none";
         courses_div.appendChild(form_element)
          
 
         var add_student_button = document.createElement("button")
         add_student_button.innerHTML = "Add Student";
-        button_id = courses_data[i].id;
+        button_id = courses_data[i].id.toString();
         add_student_button.setAttribute("id", button_id);
-        add_student_button.classList.add("add_student_to_course")
+        add_student_button.classList.add("add_student_button")
+        add_student_button.onclick = function (event) {
+            document.getElementById("add_student_form"+ event.srcElement.id).style.display = "block";
+            document.getElementById(event.srcElement.id).style.display = "none";
+        }
         courses_div.appendChild(add_student_button)
-
+        
         courses_div.classList.add("courses_div")
         the_table.appendChild(courses_div)
     }
