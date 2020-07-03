@@ -109,6 +109,7 @@ function handle_students_function(students_data){
         var submit_course_button = document.createElement("button")
         submit_course_button.innerHTML = "Submit Course";
         submit_course_button.setAttribute("value", students_data[i].id.toString());
+        submit_course_button.setAttribute("class", "btn btn-primary");
         submit_course_button.onclick = function (event) {
             event.preventDefault()
             document.getElementById("add_course_form"+event.srcElement.value).style.display = "none";
@@ -161,6 +162,7 @@ function handle_students_function(students_data){
             add_course_button.setAttribute("id", button_id);
             add_course_button.innerHTML = "Add Course";
             add_course_button.classList.add("add_course_button")
+            add_course_button.setAttribute("class", "btn btn-primary");
             add_course_button.onclick = function (event) {
                 document.getElementById("add_course_form"+ event.srcElement.id).style.display = "block";
                 document.getElementById(event.srcElement.id).style.display = "none";
@@ -193,6 +195,7 @@ function handle_students_function(students_data){
         var submit_edit_button = document.createElement("button")
         submit_edit_button.innerHTML = "Submit Edit";
         submit_edit_button.setAttribute("value", students_data[i].id.toString());
+        submit_edit_button.setAttribute("class", "btn btn-primary");
         submit_edit_button.onclick = function (event) {
             event.preventDefault()
             var name_input = document.getElementById("student_name_input"+ event.srcElement.value).value
@@ -230,6 +233,7 @@ function handle_students_function(students_data){
         edit_info_button.setAttribute("id", "edit"+button_id);
         edit_info_button.setAttribute("value", students_data[i].id.toString());
         edit_info_button.classList.add("edit_info_button")
+        edit_info_button.setAttribute("class", "btn btn-primary");
         edit_info_button.onclick = function (event) {
             document.getElementById("edit_student_form"+ event.srcElement.value).style.display = "block";
             if(document.getElementById(event.srcElement.value)){
@@ -316,6 +320,7 @@ function handle_courses_function(courses_data){
         var submit_student_button = document.createElement("button")
         submit_student_button.innerHTML = "Submit Student";
         submit_student_button.setAttribute("value", courses_data[i].id.toString());
+        submit_student_button.setAttribute("class", "btn btn-primary");
         submit_student_button.onclick = function (event) {
             event.preventDefault()
             document.getElementById("add_student_form"+event.srcElement.value).style.display = "none";
@@ -333,9 +338,11 @@ function handle_courses_function(courses_data){
 
             if ( courses_list[event.srcElement.value].students.includes(dummy_student)){
                 alert("Student already exsit in the course")
+                handle_courses_function(courses_list)
             }
             else if (students_list[corresponding_student_id].courses.length >= 3){
                 alert("this student has 3 courses, cannot have more")
+                handle_courses_function(courses_list)
             }
             else if(parseInt(courses_list[event.srcElement.value].students.length) < 3){
                 courses_list[event.srcElement.value].students.push(dummy_student)
@@ -349,6 +356,7 @@ function handle_courses_function(courses_data){
                 console.log(students_list)
             }else{
                 alert("you can not add more then 3 student per course")
+                handle_courses_function(courses_list)
             }              
             
         }
@@ -366,6 +374,7 @@ function handle_courses_function(courses_data){
         button_id = courses_data[i].id.toString();
         add_student_button.setAttribute("id", button_id);
         add_student_button.classList.add("add_student_button")
+        add_student_button.setAttribute("class", "btn btn-primary");
         add_student_button.onclick = function (event) {
             document.getElementById("add_student_form"+ event.srcElement.id).style.display = "block";
             document.getElementById(event.srcElement.id).style.display = "none";

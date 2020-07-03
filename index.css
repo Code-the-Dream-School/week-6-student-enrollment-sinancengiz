@@ -49,6 +49,7 @@ form{
 }
 form input{
   width: 25%;
+  border-color: blue;
 }
 
 button{
@@ -61,7 +62,7 @@ button{
 
 .edit_info_form select{
   width: 60%;
-
+  border-color: blue;
 }
 
 .edit_info_form label{
@@ -70,9 +71,14 @@ button{
 
 .add_student_form_class select{
   width: 60%;
+  border-color: blue;
 }
 ul{
  list-style-type:none;
  margin: 0; /* To remove default bottom margin */ 
  padding: 0; /* To remove default left padding */
+}
+
+button{
+  margin:5px;
 }
