@@ -1,9 +1,11 @@
+//student list to put student data inside it
 students_list = []
-
+// fecth student data
 fetch("https://code-the-dream-school.github.io/JSONStudentsApp.github.io/Students.json")
 .then(response => response.json())
 .then(data => student_table_func(data))
 
+// function to loop student data and put it in student list
 function student_table_func(students_data){
     for(i=0; i< students_data.length; i++){
         dummy_dict = {
@@ -23,7 +25,7 @@ console.log(students_list)
 
 const form = document.getElementById('form');
 form.addEventListener('submit', form_submit);
-
+// submit new student form
 function form_submit(e){
     e.preventDefault();
     var nameValue = document.getElementById("fname").value;
@@ -63,7 +65,7 @@ function students_function(){
     // .then(data => handle_students_function(data))
     handle_students_function(students_list)
 }
-
+// handle student function handles student data
 function handle_students_function(students_data){
     var new_student_form = document.getElementById("form");
     new_student_form.style.display = "none";
@@ -249,13 +251,13 @@ function handle_students_function(students_data){
 
     
 }
-
+// course list for courses data
 courses_list = []
-
+// fecth course data
 fetch("https://code-the-dream-school.github.io/JSONStudentsApp.github.io/Courses.json")
 .then(response => response.json())
 .then(data => courses_table_func(data))
-
+// function to loop over course data end pu it in course list
 function courses_table_func(courses_data){
     for(i=0; i< courses_data.length; i++){
         dummy_dict = {
@@ -278,7 +280,7 @@ function courses_function(){
     // .then(data => handle_courses_function(data))
     handle_courses_function(courses_list)
 }
-
+// handle courses function handles courses
 function handle_courses_function(courses_data){
     var new_student_form = document.getElementById("form");
     new_student_form.style.display = "none";
@@ -390,7 +392,7 @@ function handle_courses_function(courses_data){
 
 var new_student = document.getElementById("new_student");
 new_student.addEventListener("click", postData);
-
+// post new student data to database
 function postData(e){
     e.preventDefault()
     fetch("https://student-challenge-api.herokuapp.com/student", 
